@@ -15,17 +15,22 @@ exports.getProductByURL = async (req, res, next) => {
     }),
   });
   const product = await response.json();
-  TJO.init({
-    googleApiKey: `${process.env.GOOGLE_API_KEY}`,
-  });
 
-  TJO.translate(product.data, "en")
-    .then(function (data) {
-      return res.status(200).json(data);
-    })
-    .catch(function (err) {
-      console.log("error ", err);
+  if (product.code !== 200) {
+    return res.status(product.code).json(product);
+  } else {
+    TJO.init({
+      googleApiKey: `${process.env.GOOGLE_API_KEY}`,
     });
+
+    TJO.translate(product.data, "en")
+      .then(function (data) {
+        return res.status(200).json(data);
+      })
+      .catch(function (err) {
+        console.log("error ", err);
+      });
+  }
 };
 
 exports.getProductByID = async (req, res) => {
@@ -39,17 +44,22 @@ exports.getProductByID = async (req, res) => {
     },
   });
   const product = await response.json();
-  TJO.init({
-    googleApiKey: `${process.env.GOOGLE_API_KEY}`,
-  });
 
-  TJO.translate(product.data, "en")
-    .then(function (data) {
-      return res.status(200).json(data);
-    })
-    .catch(function (err) {
-      console.log("error ", err);
+  if (product.code !== 200) {
+    return res.status(product.code).json(product);
+  } else {
+    TJO.init({
+      googleApiKey: `${process.env.GOOGLE_API_KEY}`,
     });
+
+    TJO.translate(product.data, "en")
+      .then(function (data) {
+        return res.status(200).json(data);
+      })
+      .catch(function (err) {
+        console.log("error ", err);
+      });
+  }
 };
 
 exports.getProductDescription = async (req, res) => {
